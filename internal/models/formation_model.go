@@ -8,6 +8,7 @@ import (
 
 type FormationModel struct {
 	ID primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	UserID primitive.ObjectID `bson:"user_id,omitempty" json:"user_id"`
 	Type string `bson:"type" json:"type"`
 	Date time.Time `bson:"date" json:"date"`
 	CreatedAt time.Time          `bson:"createdAt" json:"createdAt"`

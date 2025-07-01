@@ -8,7 +8,6 @@ import (
 
 type UserModel struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	UserID       primitive.ObjectID `bson:"user_id,omitempty" json:"user_id"`
 	PhotoURL     string             `bson:"photo_url" json:"photo_url"`
 	Username     string             `bson:"username" json:"username"`
 	Password     string             `bson:"password" json:"password"`
