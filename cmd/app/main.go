@@ -5,6 +5,7 @@ import (
 	"backend-portfolio/internal/logger"
 	"backend-portfolio/internal/repository"
 	"backend-portfolio/internal/routers"
+	"backend-portfolio/internal/validate"
 	"log"
 	"os"
 
@@ -21,6 +22,7 @@ func main() {
 	if _,err := repository.ConnectToDatabase(); err != nil {
 		os.Exit(1)
 	}
+	validate.StartValidator()
 	if err := routers.RunServer(); err != nil {
 		logger.ZapLogger.Error("error in run server", 
 		zap.Error(err),

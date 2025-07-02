@@ -14,6 +14,8 @@ func SetupApp() *fiber.App {
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Status(200).JSON(fiber.Map{"message": "what's up?"})
 	})
+	userGroup := app.Group("/user")
+	setupUserRoutes(userGroup)
 	logger.ZapLogger.Info("app is running!")
 	return  app
 }
