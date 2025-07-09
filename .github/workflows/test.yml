@@ -1,0 +1,53 @@
+name: Go test
+
+on:
+  push:
+    branches: [dev, main]
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:latest
+        env:
+          MONGO_INITDB_ROOT_USERNAME: admin
+          MONGO_INITDB_ROOT_PASSWORD: admin
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: install dependencies
+        run: go mod tidy
+
+      - name: Wait for MongoDB to be ready
+        run: |
+          until mongosh --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin > /dev/null 2>&1; do
+            echo "Waiting for MongoDB..."
+            sleep 5
+          done
+
+
+      - name: run tests
+        env:
+          URI_DB: mongodb://admin:admin@localhost:27017
+          APP_ENV: PROD
+          DATABASE_NAME: portfolio
+          PASSWORD_ADMIN: "12345678"
+          PORT: "8080"
+          SECRET: "MESSIISTHEBESTPLAYEROFTHEWORLD"
+        run: go test ./... -v
