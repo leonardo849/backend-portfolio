@@ -37,15 +37,14 @@ jobs:
 
       - name: Wait for MongoDB to be ready
         run: |
-          until mongosh --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin > /dev/null 2>&1; do
+          until mongosh --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin --host mongo > /dev/null 2>&1; do
             echo "Waiting for MongoDB..."
             sleep 5
           done
 
-
       - name: run tests
         env:
-          URI_DB: mongodb://admin:admin@localhost:27017
+          URI_DB: mongodb://admin:admin@mongo:27017
           APP_ENV: PROD
           DATABASE_NAME: portfolio
           PASSWORD_ADMIN: "12345678"
