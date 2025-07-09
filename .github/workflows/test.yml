@@ -55,7 +55,7 @@ jobs:
 
       - name: Initialize MongoDB
         run: |
-          mongo --host mongo -u admin -p admin --authenticationDatabase admin <<EOF
+          mongosh --host mongo -u admin -p admin --authenticationDatabase admin <<EOF
             db = db.getSiblingDB('APP-DB');
             db.createUser({ user: 'APP-USERNAME', pwd: 'APP-PASSWORD', roles: [{ role: 'readWrite', db: 'APP-DB' }] });
             db.createCollection('APP-COLLECTION');
