@@ -40,22 +40,22 @@ jobs:
           sudo apt-get install -y mongodb-mongosh
           mongosh --version
 
-      - name: Wait for MongoDB service to be healthy
-        run: |
-          for i in {1..30}; do
-            if mongosh --host mongo -u admin -p admin --authenticationDatabase admin --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
-              echo "MongoDB is up!"
-              exit 0
-            fi
-            echo "Waiting for MongoDB..."
-            sleep 2
-          done
-          echo "MongoDB did not start in time"
-          exit 1
+      # - name: Wait for MongoDB service to be healthy
+      #   run: |
+      #     for i in {1..30}; do
+      #       if mongo --host mongo -u admin -p admin --authenticationDatabase admin --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
+      #         echo "MongoDB is up!"
+      #         exit 0
+      #       fi
+      #       echo "Waiting for MongoDB..."
+      #       sleep 2
+      #     done
+      #     echo "MongoDB did not start in time"
+      #     exit 1
 
       - name: Initialize MongoDB
         run: |
-          mongosh --host mongo -u admin -p admin --authenticationDatabase admin <<EOF
+          mongo --host mongo -u admin -p admin --authenticationDatabase admin <<EOF
             db = db.getSiblingDB('APP-DB');
             db.createUser({ user: 'APP-USERNAME', pwd: 'APP-PASSWORD', roles: [{ role: 'readWrite', db: 'APP-DB' }] });
             db.createCollection('APP-COLLECTION');
