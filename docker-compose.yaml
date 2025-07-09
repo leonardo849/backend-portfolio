@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - APP_ENV=PROD
+      - URI_DB=mongodb://admin:admin@mongo:27017
+      - DATABASE_NAME=portfolio
+      - PASSWORD_ADMIN=12345678
+      - SECRET=MESSIISTHEBESTPLAYEROFTHEWORLD
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
