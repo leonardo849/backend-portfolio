@@ -16,8 +16,6 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: admin
           MONGO_INITDB_ROOT_PASSWORD: admin
-        ports:
-          - 27017:27017
         options: >-
           --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'" 
           --health-interval 10s 
@@ -54,6 +52,18 @@ jobs:
             db.createCollection('APP-COLLECTION');
           EOF
 
+      - name: Wait for MongoDB service to be healthy
+        run: |
+          for i in {1..30}; do
+            if mongosh --host mongo -u admin -p admin --authenticationDatabase admin --eval "db.adminCommand('ping')" > /dev/null 2>&1; then
+              echo "Mongo is up!"
+              exit 0
+            fi
+            echo "Waiting for MongoDB..."
+            sleep 2
+          done
+          echo "MongoDB did not start in time"
+          exit 1
       - name: run tests
         env:
           URI_DB: mongodb://admin:admin@mongo:27017
