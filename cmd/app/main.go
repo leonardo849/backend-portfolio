@@ -12,6 +12,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Backend Portfolio API
+// @version 1.0
+// @description api for a portfolio project
+// @host localhost:port
+// @BasePath /
 func main() {
 	if err := config.SetupEnvVar(); err != nil {
 		log.Fatal(err.Error())

@@ -1,22 +1,36 @@
 package routers
 
 import (
+	_ "backend-portfolio/internal/dto"
 	"backend-portfolio/internal/logger"
 	"backend-portfolio/internal/middewares"
 	"os"
 
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/swagger"
 )
 
 func SetupApp() *fiber.App {
 	app := fiber.New()
 	app.Use(cors.New())
+	
 	logger.ZapLogger.Info("cors is ready")
 	app.Use(middlewares.LogRequestsMiddleware())
+	
+	// @Summary Hello
+	// @Description welcome message
+	// @Accept json
+	// @Produce json
+	// @Sucess 200 {object} dto.MessageDTO
+	// @Router / [get]
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Status(200).JSON(fiber.Map{"message": "what's up?"})
 	})
+
+	app.Get("/swagger/*", swagger.HandlerDefault)
+	logger.ZapLogger.Info("swagger is ready")
+
 	userGroup := app.Group("/user")
 	setupUserRoutes(userGroup)
 	logger.ZapLogger.Info("app is running!")
@@ -30,10 +44,6 @@ func RunServer() error {
 	if port == "" {
 		port = "8080"
 	}
-
-	app.Get("/", func (c *fiber.Ctx) error {
-		return c.Status(200).JSON(fiber.Map{"message": "welcome!"})
-	})
 
 	return app.Listen(":" + port)
 }
