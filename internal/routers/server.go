@@ -5,11 +5,14 @@ import (
 	"backend-portfolio/internal/middewares"
 	"os"
 
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2"
 )
 
 func SetupApp() *fiber.App {
 	app := fiber.New()
+	app.Use(cors.New())
+	logger.ZapLogger.Info("cors is ready")
 	app.Use(middlewares.LogRequestsMiddleware())
 	app.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.Status(200).JSON(fiber.Map{"message": "what's up?"})
