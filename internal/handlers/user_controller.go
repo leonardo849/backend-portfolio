@@ -19,6 +19,15 @@ func NewUserController(userService *services.UserService) *UserController{
 	}
 }
 
+// LoginUser godoc
+// @Description Login user
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param guest body dto.LoginUserDTO true "user data"
+// @Success 201 {object} dto.MessageResponseDTO
+// @Failure 401 {object} dto.ErrorResponseDTO
+// @Router /user/login [post]
 func (u *UserController) LoginUser() fiber.Handler {
 	return func (ctx *fiber.Ctx) error {
 		var input dto.LoginUserDTO

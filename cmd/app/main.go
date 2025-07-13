@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend-portfolio/config"
+	_ "backend-portfolio/docs"
 	"backend-portfolio/internal/logger"
 	"backend-portfolio/internal/repository"
 	"backend-portfolio/internal/routers"
