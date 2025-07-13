@@ -11,6 +11,18 @@ import (
 	"github.com/gofiber/swagger"
 )
 
+// hello godoc
+// @Summary hello 
+// @Description welcome message
+// @Accept json
+// @Produce json
+// @Success 200 {object} dto.MessageResponseDTO
+// @Router / [get]
+func hello (ctx *fiber.Ctx) error {
+	return ctx.Status(200).JSON(fiber.Map{"message": "what's up?"})
+}
+	
+
 func SetupApp() *fiber.App {
 	app := fiber.New()
 	app.Use(cors.New())
@@ -18,16 +30,8 @@ func SetupApp() *fiber.App {
 	logger.ZapLogger.Info("cors is ready")
 	app.Use(middlewares.LogRequestsMiddleware())
 	
-	// Welcome Message godoc
-	// @Summary Hello 
-	// @Description welcome message
-	// @Accept json
-	// @Produce json
-	// @Sucess 200 {object} dto.MessageDTO
-	// @Router / [get]
-	app.Get("/", func(ctx *fiber.Ctx) error {
-		return ctx.Status(200).JSON(fiber.Map{"message": "what's up?"})
-	})
+	
+	app.Get("/", hello)
 
 	app.Get("/swagger/*", swagger.HandlerDefault)
 	logger.ZapLogger.Info("swagger is ready")

@@ -31,6 +31,19 @@ info:
   title: Backend Portfolio API
   version: "1.0"
 paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: welcome message
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.MessageResponseDTO'
+      summary: hello
   /user/login:
     post:
       consumes:
