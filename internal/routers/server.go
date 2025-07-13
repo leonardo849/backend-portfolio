@@ -18,7 +18,8 @@ func SetupApp() *fiber.App {
 	logger.ZapLogger.Info("cors is ready")
 	app.Use(middlewares.LogRequestsMiddleware())
 	
-	// @Summary Hello
+	// Welcome Message godoc
+	// @Summary Hello 
 	// @Description welcome message
 	// @Accept json
 	// @Produce json
